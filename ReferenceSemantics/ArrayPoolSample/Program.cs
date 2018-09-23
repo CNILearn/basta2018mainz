@@ -79,6 +79,7 @@ namespace ArrayPoolSample
 
         private static void LocalUseOfSharedPool(int i)
         {
+            
             int[] arr = ArrayPool<int>.Shared.Rent(ARRAYSIZE);
             ShowAddress($"simple array {i}", arr);
             FillTheArray(arr);
