@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Linq;
 
 namespace ArrayPoolSample
 {
@@ -9,8 +10,8 @@ namespace ArrayPoolSample
 
         static void Main()
         {
-            UsingArrays();
-            //LocalUseOfSharedPool()
+          //  ArrayPool1();
+            UsingArrays(pool: false, collect: false);
         }
 
         public static void ArrayPool1()
@@ -28,18 +29,30 @@ namespace ArrayPoolSample
             }
         }
 
-        private static void UsingSimpleArrays()
+        private static void UsingArrays(bool pool = false, bool collect = false)
         {
-            Console.WriteLine(nameof(UsingSimpleArrays));
+            Console.WriteLine(nameof(UsingArrays));
             for (int i = 0; i < 20; i++)
             {
-                LocalUseOfArray(i);
+                if (collect)
+                {
+                    GC.Collect(0);  // avoid with production code
+                }
+                if (pool)
+                {
+                    UseArrayFromPool(i);
+                }
+                else
+                {
+                    UseArray(i);
+                }
             }
             Console.WriteLine();
             Console.WriteLine();
         }
 
-        private static void LocalUseOfArray(int i)
+
+        private static void UseArray(int i)
         {
             int[] arr = new int[ARRAYSIZE];
             ShowAddress($"simple array {i}", arr);
@@ -63,23 +76,8 @@ namespace ArrayPoolSample
             }
         }
 
-        private static void UsingArrays()
-        {
-            Console.WriteLine(nameof(UsingArrays));
-            for (int i = 0; i < 20; i++)
-            {
-                GC.Collect(0);
-                // LocalUseOfArray(i);
-                LocalUseOfSharedPool(i);
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-        }
-
-
-        private static void LocalUseOfSharedPool(int i)
-        {
-            
+        private static void UseArrayFromPool(int i)
+        { 
             int[] arr = ArrayPool<int>.Shared.Rent(ARRAYSIZE);
             ShowAddress($"simple array {i}", arr);
             FillTheArray(arr);
@@ -89,7 +87,8 @@ namespace ArrayPoolSample
 
         private static void UseTheArray(int[] arr)
         {
-
+            int sum = arr.Sum();
+           // Console.WriteLine($"use array with sum: {sum}");
         }
     }
 }
