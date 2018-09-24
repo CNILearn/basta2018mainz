@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,18 +17,6 @@ namespace StreamSamples
             if (args.Length == 2 && args[0] == "-rs")
             {
                 ReadFileUsingFileStream(args[1]);
-            }
-            else if (args.Length == 1 && args[0] == "-w")
-            {
-                WriteTextFile();
-            } 
-            else if (args.Length == 3 && args[0] == "-cs")
-            {
-                CopyUsingStreams(args[1], args[2]);
-            }
-            else if (args.Length == 3 && args[0] == "-cs2")
-            {
-                CopyUsingStreams2(args[1], args[2]);
             }
             else if (args.Length == 1 && args[0] == "-sample")
             {
@@ -58,37 +45,13 @@ namespace StreamSamples
             Console.WriteLine("\t-r\tRandom Access Sample");
         }
 
-        public static void WriteTextFile()
-        {
-            string tempTextFileName = Path.ChangeExtension(Path.GetTempFileName(), "txt");
-            using (FileStream stream = File.OpenWrite(tempTextFileName))
-            {
-                //// write BOM
-                //stream.WriteByte(0xef);
-                //stream.WriteByte(0xbb);
-                //stream.WriteByte(0xbf);
-
-                byte[] preamble = Encoding.UTF8.GetPreamble();
-                // stream.Write(preamble, 0, preamble.Length);
-                stream.Write(preamble.AsSpan());
-
-                string hello = "Hello, World!";
-
-                Span<byte> helloSpan = Encoding.UTF8.GetBytes(hello).AsSpan();
-                // stream.Write(buffer, 0, buffer.Length);
-                stream.Write(helloSpan);
-                Console.WriteLine($"file {stream.Name} written");
-            }
-        }
-
         public static void RandomAccessSample()
         {
             try
             {
                 using (FileStream stream = File.OpenRead(SampleFileDataPath))
                 {
-                    byte[] buffer = new byte[RECORDSIZE];
-                    Span<byte> spanToBuffer = buffer.AsSpan();
+                    Span<byte> buffer = new byte[RECORDSIZE].AsSpan();
                     do
                     {
                         try
@@ -100,11 +63,10 @@ namespace StreamSamples
                             if (int.TryParse(line, out int record))
                             {
                                 stream.Seek((record - 1) * RECORDSIZE, SeekOrigin.Begin);
-                                
+
                                 // stream.Read(buffer, 0, RECORDSIZE);
-                                stream.Read(spanToBuffer);
-                                string s = Encoding.UTF8.GetString(spanToBuffer);
-                                // string s = Encoding.UTF8.GetString(buffer);
+                                stream.Read(buffer);
+                                string s = Encoding.UTF8.GetString(buffer);
                                 Console.WriteLine($"record: {s}");
                             }
                         }
@@ -145,36 +107,6 @@ namespace StreamSamples
             }
         }
 
-        public static void CopyUsingStreams(string inputFile, string outputFile)
-        {
-            const int BUFFERSIZE = 4096;
-            using (var inputStream = File.OpenRead(inputFile))
-            using (var outputStream = File.OpenWrite(outputFile))
-            {
-                byte[] buffer = new byte[BUFFERSIZE];
-                Span<byte> spanToBuffer = buffer.AsSpan();
-                bool completed = false;
-                do
-                {
-                    // int nRead = inputStream.Read(buffer, 0, BUFFERSIZE);
-                    int nRead = inputStream.Read(spanToBuffer);
-                    if (nRead == 0) completed = true;
-                    Span<byte> slice = spanToBuffer.Slice(0, nRead);
-                    // outputStream.Write(buffer, 0, nRead);
-                    outputStream.Write(slice);
-                } while (!completed);
-            }
-        }
-
-        public static void CopyUsingStreams2(string inputFile, string outputFile)
-        {
-            using (var inputStream = File.OpenRead(inputFile))
-            using (var outputStream = File.OpenWrite(outputFile))
-            {
-                inputStream.CopyTo(outputStream);
-            }
-        }
-
         public static void ReadFileUsingFileStream(string fileName)
         {
             const int BUFFERSIZE = 4096;
@@ -183,22 +115,22 @@ namespace StreamSamples
                 ShowStreamInformation(stream);
                 Encoding encoding = GetEncoding(stream);
 
-                Span<byte> bufferSpan = new byte[BUFFERSIZE].AsSpan();
+                Span<byte> buffer = new byte[BUFFERSIZE].AsSpan();
 
                 bool completed = false;
                 do
                 {
                     // int nread = stream.Read(buffer, 0, BUFFERSIZE);
-                    int nread = stream.Read(bufferSpan);
+                    int nread = stream.Read(buffer);
                     if (nread == 0) completed = true;
                     if (nread < BUFFERSIZE)
                     {
-                        bufferSpan.Clear();
+                        buffer.Slice(nread).Clear();
 //                        Array.Clear(buffer, nread, BUFFERSIZE - nread);
                     }
-                    Span<byte> slice = bufferSpan.Slice(0, nread);
-                    // string s = encoding.GetString(buffer, 0, nread);
-                    string s = encoding.GetString(slice);
+
+                    //                  string s = encoding.GetString(buffer, 0, nread);
+                    string s = encoding.GetString(buffer);
                     Console.WriteLine($"read {nread} bytes");
                     Console.WriteLine(s);
                 } while (!completed);
