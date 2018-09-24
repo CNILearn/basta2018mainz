@@ -22,7 +22,7 @@ namespace SpanSample
             {              
                 int* p2 = (int*)p.ToPointer();
                 
-                Span<int> span = new Span<int>(p2, nbytes >> 2);
+                var span = new Span<int>(p2, nbytes >> 2);
                 span.Fill(42);
 
                 int max = nbytes >> 2;
@@ -43,10 +43,10 @@ namespace SpanSample
         {
             Console.WriteLine(nameof(SpanOnTheStack));
 
-            long* lp = stackalloc long[20];
-            var span1 = new Span<long>(lp, 20);
+            long* lp = stackalloc long[] { 10, 8, 6, 4, 2, 0, 3, 5, 7, 9 };
+            var span1 = new Span<long>(lp, 10);
             
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 span1[i] = i;
             }
@@ -63,7 +63,7 @@ namespace SpanSample
             span1.Slice(start: 4, length: 3).Fill(42);
 
             Console.WriteLine(string.Join(", ", span1.ToArray()));
-
+           
             Console.WriteLine();
         }
 
