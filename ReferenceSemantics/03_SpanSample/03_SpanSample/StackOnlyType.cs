@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace _03_SpanSample
+﻿namespace _03_SpanSample
 {
     ref struct StackOnlyType
     {
