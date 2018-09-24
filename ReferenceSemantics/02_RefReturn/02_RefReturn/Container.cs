@@ -14,7 +14,7 @@ namespace _02_RefReturn
 
         public void PassByReference(in int x)
         {
-            // x = 42;
+            // x = 42; cannot change!
         }
 
         public void ShowAll()
