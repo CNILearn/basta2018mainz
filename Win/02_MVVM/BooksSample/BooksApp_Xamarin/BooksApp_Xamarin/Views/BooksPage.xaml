@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BooksApp_Xamarin.Views.BooksPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Command="{Binding ViewModel.RefreshCommand, Mode=OneWay}" />
+        <ToolbarItem Text="Add Book" Command="{Binding ViewModel.AddCommand, Mode=OneWay}" />
+    </ContentPage.ToolbarItems>
+  <ListView x:Name="MyListView"
+            ItemsSource="{Binding ViewModel.Items, Mode=OneWay}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement">
+            
+    <!--Built in Cells-->
+    <!--<ListView.ItemTemplate>
+        <DataTemplate>
+            <TextCell Text="{Binding .}" />
+        </DataTemplate>
+    </ListView.ItemTemplate>-->
+    
+    <!--Custom View Cells-->
+    
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <ViewCell>
+          <StackLayout>
+            <Label Text="{Binding Item.Title, Mode=OneWay}" 
+                   Style="{DynamicResource ListItemTextStyle}" />
+            <Label Text="{Binding Item.Publisher, Mode=OneWay}" 
+                   Style="{DynamicResource ListItemDetailTextStyle}"/>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+    
+  </ListView>
+</ContentPage>
