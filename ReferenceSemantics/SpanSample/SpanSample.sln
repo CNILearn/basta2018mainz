@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpanSample", "SpanSample.csproj", "{BC02EC75-9B09-4111-8B33-0C120AA472C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC02EC75-9B09-4111-8B33-0C120AA472C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC02EC75-9B09-4111-8B33-0C120AA472C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC02EC75-9B09-4111-8B33-0C120AA472C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC02EC75-9B09-4111-8B33-0C120AA472C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD3192EB-1488-4E09-A417-A97233C74220}
+	EndGlobalSection
+EndGlobal
