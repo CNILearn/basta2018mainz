@@ -12,9 +12,9 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        <Controls:InkToolbar TargetInkCanvas="{x:Reference inkCanvas}" Grid.Row="0" Height="150" />
         <Controls:InkCanvas x:Name="inkCanvas" HorizontalAlignment="Left" Height="400" Margin="8" VerticalAlignment="Top" Width="500"  Grid.Row="1"/>
-        <Controls:InkToolbar TargetInkCanvas="{Binding ElementName=inkCanvas}" Grid.Row="0" Height="50" />
+
 
     </Grid>
 </Window>
