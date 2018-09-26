@@ -14,7 +14,7 @@
                 <ScaleTransform ScaleX="2" ScaleY="2" />
             </StackPanel.RenderTransform>
             <TextBox Header="Greeting 1"  />
-            <TextBox Header="Greeting 2" IsHandwritingViewEnabled="True" />
+            <TextBox Header="Greeting 2" />
             <RichEditBox Header="Some Text">
                 <RichEditBox.ContentLinkProviders>
                     <ContentLinkProviderCollection>
