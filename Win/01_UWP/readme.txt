@@ -1,0 +1,1 @@
+Inventory sample: https://github.com/Microsoft/InventorySample
